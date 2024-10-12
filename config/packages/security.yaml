@@ -1,0 +1,55 @@
+security:
+    enable_authenticator_manager: true
+    password_hashers:
+        # auto hasher with default options for the User class (and children)
+        App\Entity\User:    'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: plaintext # disable hashing (only do this in tests!)
+
+        # App\Entity\Lesmoyens:
+        #     algorithm: auto
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+        # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        #users_in_memory: { memory: null }
+        app_clients_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+                
+    #enable_authenticator_manager: true
+    firewalls:
+        login:
+                pattern: ^/api/login
+                stateless: true
+                json_login:
+                    check_path: /api/login_check
+                    success_handler: lexik_jwt_authentication.handler.authentication_success
+                    failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
+            entry_point: jwt
+
+            refresh_jwt:
+                check_path: /api/token/refresh
+        #enable_authenticator_manager: true
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+   
+        #api:
+            # pattern: ^/api
+            # stateless: true
+            # guard:
+            #     authenticators:
+            #         - lexik_jwt_authentication.jwt_token_authenticator
+        main:
+           
+            # provider: chain_provider
+    access_control:
+         - { path: ^/admin  , roles: ROLE_ADMIN }
+         - { path: ^/profile,       roles: ROLE_USER }
+
+         - { path: ^/api/login, roles: PUBLIC_ACCESS }

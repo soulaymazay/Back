@@ -1,0 +1,71 @@
+app_create_clients:
+    path: /api/add
+    controller: App\Controller\ClientController::createClients
+    methods: POST
+    format: json
+app_list_clients:
+    path: /api/list
+    controller: App\Controller\ClientsController::list
+    methods: GET
+    format: json
+app_update_clients:
+    path: /api/clients/{id}
+    controller: App\Controller\ClientController::updateClients
+    methods: PUT
+    format: json
+app_delete_clients:
+    path: /api/clients/{id}
+    controller: App\Controller\ClientController::delete
+    methods: DELETE
+    format: json
+app_create_chauffeur:
+    path: /api/addchauffeur
+    controller: App\Controller\ChauffeurController::createChauffeur
+    methods: POST
+    format: json
+app_list_chauffeur:
+    path: /api/listchauffeur
+    controller: App\Controller\ChauffeurController::list
+    methods: GET
+    format: json
+app_update_chauffeur:
+    path: /api/chauffeur/{id}
+    controller: App\Controller\ChauffeurController::updateChauff
+    methods: PUT
+    format: json
+app_delete_chauffeur:
+    path: /api/chauffeur/{id}
+    controller: App\Controller\ChauffeurController::delete
+    methods: DELETE
+    format: json
+# # api_login_check:
+# #     path: /api/login_check
+# # list_clients:
+# #     path: /clients
+# #     methods: GET
+# #     controller: App\Controller\ClientController::listClientsAction
+# #     middleware: App\Middleware\JwtMiddleware
+app_create_moyen:
+    path: /api/addmoyen
+    controller: App\Controller\TouslesmoyensController::createMoyen
+    methods: POST
+    format: json
+app_list_moyen:
+    path: /api/listmoyen
+    controller: App\Controller\ClientsController::list
+    methods: GET
+    format: json
+app_update_moyen:
+    path: /api/moyen/{id}
+    controller: App\Controller\ClientController::updateLesmoyens
+    methods: PUT
+    format: json
+app_delete_moyen:
+    path: /api/moyen/{id}
+    controller: App\Controller\ClientController::delete
+    methods: DELETE
+    format: json
+api_login_check:
+    path: /api/login_check
+api_refresh_token:
+    path: /api/token/refresh

@@ -1,0 +1,50 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    chauffeur_directory: '%kernel.project_dir%/public/uploads/chauffeurs'
+    client_directory: '%kernel.project_dir%/public/uploads/clients'
+    moyen_directory: '%kernel.project_dir%/public/uploads/moyens'
+services:
+    acme_api.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+    app.serializer:
+        class: App\Serializer\MySerializer
+        arguments: ['@dependency1', '@dependency2']
+    App\Controller\ClientController:
+        arguments:
+            $imageDirectory: '%client_directory%'
+
+    App\Controller\ChauffeurController:
+        arguments:
+            $passwordEncoder: '@security.password_encoder'
+            $imageDirectory: '%chauffeur_directory%'
+    App\Controller\TouslesmoyensController:
+        arguments:
+            $imageDirectory: '%moyen_directory%'
+            # $passwordEncoder: '@security.password_encoder'
+    # default configuration for services in *this* file
+    _defaults:
+        bind:
+            $chauffeurDirectory: '%chauffeur_directory%'
+            $clientDirectory: '%client_directory%'
+            $moyenDirectory: '%moyen_directory%'
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
